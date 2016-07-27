@@ -82,7 +82,7 @@ public class NormalizeOperation implements Operation {
 
     final Mat output = outputSocket.getValue().get();
 
-    normalize(input, output, a.doubleValue(), b.doubleValue(), type.value, -1, null);
+    normalize(input, output, a.doubleValue(), b.doubleValue(), type.value, -1);
 
     outputSocket.setValue(output);
   }
