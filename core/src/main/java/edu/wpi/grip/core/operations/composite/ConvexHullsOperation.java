@@ -8,6 +8,7 @@ import edu.wpi.grip.core.sockets.SocketHint;
 
 import com.google.common.collect.ImmutableList;
 
+import org.opencv.core.CvType;
 import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 
@@ -75,7 +76,15 @@ public class ConvexHullsOperation implements Operation {
   private static MatOfPoint hull(MatOfPoint contour) {
     MatOfInt hull = new MatOfInt();
     convexHull(contour, hull);
-    return new MatOfPoint(hull);
+    MatOfPoint mopHull = new MatOfPoint();
+    mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
+    for (int hullIdx = 0; hullIdx < hull.size().height; hullIdx++) {
+      int contIdx = (int) hull.get(hullIdx, 0)[0];
+      double[] pointVals = contour.get(contIdx, 0);
+      double[] point = new double[] {pointVals[0], pointVals[1]};
+      mopHull.put(hullIdx, 0, point);
+    }
+    return mopHull;
   }
 
 }
